@@ -13,6 +13,8 @@ public class Student extends User {
 
     private int grade;
 
+    private char classLetter;
+
     public Student() {
         this.absences = new HashSet<>();
         this.marks = new HashSet<>();
@@ -40,5 +42,22 @@ public class Student extends User {
 
     public void setAbsences(Set<Absence> absences) {
         this.absences = absences;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    @Column(name = "class_letter")
+    public char getClassLetter() {
+        return classLetter;
+    }
+
+    public void setClassLetter(char classLetter) {
+        this.classLetter = classLetter;
     }
 }

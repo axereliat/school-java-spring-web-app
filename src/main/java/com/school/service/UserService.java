@@ -1,12 +1,17 @@
 package com.school.service;
 
 import com.school.domain.models.binding.UserRegisterBindingModel;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     void seedAdminAndRoles();
 
     void sendRequestToAdmin();
 
-    void register(UserRegisterBindingModel bindingModel);
+    boolean register(UserRegisterBindingModel bindingModel);
+
+    boolean existsUserByUsername(String username);
+
+    boolean existsUserByEmail(String email);
 }

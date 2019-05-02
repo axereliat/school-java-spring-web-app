@@ -1,14 +1,15 @@
 package com.school.service;
 
 import com.school.common.constants.RoleConstants;
-import com.school.domain.entities.Role;
-import com.school.domain.entities.Teacher;
-import com.school.domain.entities.User;
+import com.school.domain.entities.*;
 import com.school.domain.models.binding.UserRegisterBindingModel;
 import com.school.repository.RoleRepository;
+import com.school.repository.SubjectRepository;
 import com.school.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +23,18 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
 
+    private final SubjectRepository subjectRepository;
+
     private final BCryptPasswordEncoder passwordEncoder;
 
     private final ModelMapper modelMapper;
 
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SubjectRepository subjectRepository, BCryptPasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.subjectRepository = subjectRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelMapper = modelMapper;
     }
@@ -65,10 +70,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(UserRegisterBindingModel bindingModel) {
+    public boolean register(UserRegisterBindingModel bindingModel) {
         if (bindingModel.getRole().equals(RoleConstants.TEACHER_ROLE)) {
             Teacher teacher = this.modelMapper.map(bindingModel, Teacher.class);
-            //teacher.setSubject();
+            teacher.getAuthorities().add(this.roleRepository.findByAuthority(RoleConstants.TEACHER_ROLE));
+            teacher.setPassword(this.passwordEncoder.encode(bindingModel.getPassword()));
+            Subject foundSubject = this.subjectRepository.findByName(bindingModel.getSubject());
+            if (foundSubject == null || bindingModel.getSubject().equals("")) {
+                return false;
+            }
+            teacher.setSubject(foundSubject);
+            teacher.setEnabled(false);
+
+            this.userRepository.saveAndFlush(teacher);
         }
+        if (bindingModel.getRole().equals(RoleConstants.STUDENT_ROLE)) {
+            if (bindingModel.getGrade() == 0 || bindingModel.getClassLetter() == '0') {
+                return false;
+            }
+            Student student = this.modelMapper.map(bindingModel, Student.class);
+            student.getAuthorities().add(this.roleRepository.findByAuthority(RoleConstants.STUDENT_ROLE));
+            student.setPassword(this.passwordEncoder.encode(bindingModel.getPassword()));
+            student.setEnabled(false);
+
+            this.userRepository.saveAndFlush(student);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean existsUserByUsername(String username) {
+        return this.userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsUserByEmail(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        if (!this.userRepository.existsByUsername(s)) {
+            throw new UsernameNotFoundException("Username " + s + " not found.");
+        }
+        return this.userRepository.findByUsername(s);
     }
 }

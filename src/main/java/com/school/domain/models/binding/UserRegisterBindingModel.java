@@ -16,10 +16,17 @@ public class UserRegisterBindingModel {
 
     private String confirmPassword;
 
-    @NotEmpty(message = "Phone numberis required.")
+    @NotEmpty(message = "Phone number is required.")
     private String phoneNumber;
 
+    @NotEmpty(message = "Please select who you are.")
     private String role;
+
+    private int grade;
+
+    private String subject;
+
+    private char classLetter;
 
     public String getUsername() {
         return username;
@@ -67,5 +74,29 @@ public class UserRegisterBindingModel {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public char getClassLetter() {
+        return classLetter;
+    }
+
+    public void setClassLetter(char classLetter) {
+        this.classLetter = classLetter;
     }
 }

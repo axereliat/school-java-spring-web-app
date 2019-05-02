@@ -1,4 +1,4 @@
-package com.school.web;
+package com.school.web.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "redirect:/authenticate";
+        return "home/index";
     }
 }
