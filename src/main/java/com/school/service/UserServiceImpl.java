@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -65,11 +66,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendRequestToAdmin() {
-
-    }
-
-    @Override
     public boolean register(UserRegisterBindingModel bindingModel) {
         if (bindingModel.getRole().equals(RoleConstants.TEACHER_ROLE)) {
             Teacher teacher = this.modelMapper.map(bindingModel, Teacher.class);
@@ -106,6 +102,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsUserByEmail(String email) {
         return this.userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public List<User> findAllDisabledAccounts() {
+        return this.userRepository.findAllDisabledAccounts();
+    }
+
+    @Override
+    public boolean enableAccount(Integer userId) {
+        User user = this.userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return false;
+        }
+        user.setEnabled(true);
+        this.userRepository.saveAndFlush(user);
+        return true;
     }
 
     @Override

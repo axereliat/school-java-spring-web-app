@@ -133,6 +133,21 @@ public class User implements UserDetails {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @Transient
+    public boolean isAdmin() {
+        return this.authorities.stream().anyMatch(x -> x.getAuthority().equals("ADMIN"));
+    }
+
+    @Transient
+    public boolean isTeacher() {
+        return this.authorities.stream().anyMatch(x -> x.getAuthority().equals("TEACHER"));
+    }
+
+    @Transient
+    public boolean isStudent() {
+        return this.authorities.stream().anyMatch(x -> x.getAuthority().equals("STUDENT"));
+    }
 }
 
 /*

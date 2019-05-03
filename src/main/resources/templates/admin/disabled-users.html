@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block th:include="common/head"></th:block>
+
+<body>
+<th:block th:include="common/header"></th:block>
+
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Disabled accounts</h1>
+                <th:block th:each="user : ${users}">
+                    <div class="row" th:id="|div_${user.id}|">
+                        <div class="col-md-6">
+                            <p th:if="${user.isTeacher()}" th:text="|${user.username} claims to be a teacher|"></p>
+                            <p th:if="${user.isStudent()}" th:text="|${user.username} claims to be a student|"></p>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary enableBtn" th:id="${user.id}">Enable</button>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<th:block th:include="common/footer"></th:block>
+</body>
+</html>
+
+<script>
+    $(function () {
+        $('.enableBtn').on('click', function (e) {
+            e.preventDefault();
+
+            var $self = $(this);
+            $.ajax({
+                url: '/admin/enable-account/' + $self.attr('id'),
+                method: 'GET',
+                success: function (res) {
+                    toastr.success('User account successfully enabled.');
+                    $('#div_' + $self.attr('id')).remove();
+                },
+                error: function (err) {
+                    console.log(err);
+                    toastr.error(err.message);
+                }
+            })
+        })
+    });
+</script>
