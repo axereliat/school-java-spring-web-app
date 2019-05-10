@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
 
+    User findByUsername(String username);
+
     void seedAdminAndRoles();
 
     List<User> findAllDisabledAccounts();
@@ -19,4 +21,8 @@ public interface UserService extends UserDetailsService {
     boolean existsUserByEmail(String email);
 
     boolean enableAccount(Integer userId);
+
+    List<User> findUsersFromClass(int number, char letter);
+
+    User findById(Integer studentId);
 }

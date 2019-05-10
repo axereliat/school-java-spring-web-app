@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -110,6 +111,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByUsername(String username) {
+        return this.userRepository.findByUsername(username);
+    }
+
+    @Override
     public boolean enableAccount(Integer userId) {
         User user = this.userRepository.findById(userId).orElse(null);
         if (user == null) {
@@ -118,6 +124,25 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(true);
         this.userRepository.saveAndFlush(user);
         return true;
+    }
+
+    @Override
+    public List<User> findUsersFromClass(int number, char letter) {
+        return this.userRepository.findAll().stream().filter(user -> {
+            Student student = null;
+            if (user.isStudent()) {
+                student = (Student) user;
+            }
+            if (student != null && student.getClassLetter() == letter && student.getGrade() == number) {
+                return true;
+            }
+            return false;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public User findById(Integer studentId) {
+        return this.userRepository.findById(studentId).orElse(null);
     }
 
     @Override

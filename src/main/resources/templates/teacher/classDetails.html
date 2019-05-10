@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block th:include="common/head"></th:block>
+
+<body>
+<th:block th:include="common/header"></th:block>
+
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <h2 class="text-center" th:text="|Choose a student from ${classId}|"></h2>
+        <div class="row ml-2">
+            <div class="col-md-3">
+                <th:block th:each="student : ${students}">
+                    <a th:href="@{/teacher/students/{id}(id=${student.id})}" th:text="${student.username}"></a>
+                    <br/>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<th:block th:include="common/footer"></th:block>
+</body>
+</html>

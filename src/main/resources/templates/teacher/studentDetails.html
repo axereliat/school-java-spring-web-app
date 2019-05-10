@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block th:include="common/head"></th:block>
+
+<body>
+<th:block th:include="common/header"></th:block>
+
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <h2 class="text-center" th:text="|${student.username}'s marks|"></h2>
+        <button class="btn btn-primary"><i class="fas fa-marker"></i> Write a mark</button>
+        <div class="row ml-2">
+            <div class="col-md-3">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Marks</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="subject : ${subjects}">
+                        <td th:text="${subject.name}"></td>
+                        <td>
+                            <th:block th:each="mark : ${subjectMarkMap.get(subject.name)}">
+                                <button th:text="${mark.value}"></button>
+                            </th:block>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<th:block th:include="common/footer"></th:block>
+</body>
+</html>

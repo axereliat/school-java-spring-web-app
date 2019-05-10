@@ -1,5 +1,6 @@
 package com.school.domain.config;
 
+import com.school.common.constants.RoleConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/admin/**").hasAuthority(RoleConstants.ADMIN_ROLE)
+                .antMatchers("/teacher/**").hasAuthority(RoleConstants.TEACHER_ROLE)
                 .antMatchers("/authenticate", "/css/**", "/js/**", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()

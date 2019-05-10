@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<th:block th:include="common/head"></th:block>
+
+<body>
+<th:block th:include="common/header"></th:block>
+
+<div id="content-wrapper">
+    <div class="container-fluid">
+        <h2 class="text-center">Choose class</h2>
+        <div class="row">
+            <div class="row ml-2">
+                <th:block th:each="number : ${#numbers.sequence(1, 12)}">
+                    <div class="col-md-3">
+                        <a th:href="@{/teacher/classes/{id}(id=${number + 'A'})}" th:text="${number + 'A'}"></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a th:href="@{/teacher/classes/{id}(id=${number + 'B'})}" th:text="${number + 'B'}"></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a th:href="@{/teacher/classes/{id}(id=${number + 'C'})}" th:text="${number + 'C'}"></a>
+                    </div>
+                    <div class="col-md-3">
+                        <a th:href="@{/teacher/classes/{id}(id=${number + 'D'})}" th:text="${number + 'D'}"></a>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<th:block th:include="common/footer"></th:block>
+</body>
+</html>
