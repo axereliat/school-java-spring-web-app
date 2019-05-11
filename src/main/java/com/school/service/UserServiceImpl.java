@@ -1,7 +1,9 @@
 package com.school.service;
 
 import com.school.common.constants.RoleConstants;
+import com.school.common.enumerations.MarkType;
 import com.school.domain.entities.*;
+import com.school.domain.models.binding.MarkWriteBindingModel;
 import com.school.domain.models.binding.UserRegisterBindingModel;
 import com.school.repository.RoleRepository;
 import com.school.repository.SubjectRepository;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -138,6 +141,30 @@ public class UserServiceImpl implements UserService {
             }
             return false;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean writeMark(Integer studentId, MarkWriteBindingModel bindingModel, Principal principal) {
+        User user = this.userRepository.findById(studentId).orElse(null);
+        if (user == null || !user.isStudent()) {
+            return false;
+        }
+        Student student = (Student) user;
+
+        if (bindingModel.getMark() < 2 || bindingModel.getMark() > 6) {
+            return false;
+        }
+        Teacher currentTeacher = (Teacher) this.userRepository.findByUsername(principal.getName());
+        Mark mark = new Mark();
+        mark.setSubject(currentTeacher.getSubject());
+        mark.setType(MarkType.valueOf(bindingModel.getMarkType()));
+        mark.setValue(bindingModel.getMark());
+
+        student.addMark(mark);
+
+        this.userRepository.saveAndFlush(student);
+
+        return true;
     }
 
     @Override

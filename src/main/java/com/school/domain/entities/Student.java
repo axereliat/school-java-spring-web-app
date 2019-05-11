@@ -60,4 +60,9 @@ public class Student extends User {
     public void setClassLetter(char classLetter) {
         this.classLetter = classLetter;
     }
+
+    @Transient
+    public void addMark(Mark mark) {
+        this.marks.add(mark);
+    }
 }

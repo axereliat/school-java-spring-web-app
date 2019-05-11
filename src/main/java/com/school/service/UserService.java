@@ -1,9 +1,11 @@
 package com.school.service;
 
 import com.school.domain.entities.User;
+import com.school.domain.models.binding.MarkWriteBindingModel;
 import com.school.domain.models.binding.UserRegisterBindingModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
@@ -23,6 +25,8 @@ public interface UserService extends UserDetailsService {
     boolean enableAccount(Integer userId);
 
     List<User> findUsersFromClass(int number, char letter);
+
+    boolean writeMark(Integer studentId, MarkWriteBindingModel bindingModel, Principal principal);
 
     User findById(Integer studentId);
 }

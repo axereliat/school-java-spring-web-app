@@ -8,7 +8,41 @@
 <div id="content-wrapper">
     <div class="container-fluid">
         <h2 class="text-center" th:text="|${student.username}'s marks|"></h2>
-        <button class="btn btn-primary"><i class="fas fa-marker"></i> Write a mark</button>
+        <div class="modal fade" id="writeMarkDialog" tabindex="-1" role="dialog" aria-labelledby="writeMarkDialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Write a mark</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="writeMarkForm" method="post" th:action="@{/teacher/students/{id}/write-mark(id=${student.id})}">
+                            <p th:text="|Subject - ${currentTeacher.subject.name}|"></p>
+                            <label for="mark">Mark value </label>
+                            <select name="mark" class="form-control" id="mark">
+                                <option value="6" selected>6</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                            </select>
+                            <label for="markType">Mark type </label>
+                            <select name="markType" class="form-control" id="markType">
+                                <option value="PRACTICAL" selected>Practical</option>
+                                <option value="SPEAKING">Speaking</option>
+                                <option value="WRITING">Writing</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-marker"></i> Write</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row ml-2">
             <div class="col-md-3">
                 <table class="table">
@@ -25,6 +59,12 @@
                             <th:block th:each="mark : ${subjectMarkMap.get(subject.name)}">
                                 <button th:text="${mark.value}"></button>
                             </th:block>
+                            <button th:if="${#strings.equals(subject.name, currentTeacher.subject.name)}"
+                                    class="btn btn-primary"
+                                    data-toggle="modal"
+                                    data-target="#writeMarkDialog">
+                                <i class="fas fa-marker"></i>
+                            </button>
                         </td>
                     </tr>
                     </tbody>
