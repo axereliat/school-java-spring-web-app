@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -159,6 +160,7 @@ public class UserServiceImpl implements UserService {
         mark.setSubject(currentTeacher.getSubject());
         mark.setType(MarkType.valueOf(bindingModel.getMarkType()));
         mark.setValue(bindingModel.getMark());
+        mark.setWrittenOn(LocalDateTime.now());
 
         student.addMark(mark);
 

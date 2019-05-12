@@ -57,7 +57,16 @@
                         <td th:text="${subject.name}"></td>
                         <td>
                             <th:block th:each="mark : ${subjectMarkMap.get(subject.name)}">
-                                <button th:text="${mark.value}"></button>
+                                <button th:if="${mark.value == 6}" th:text="${mark.value}" class="btn btn-success"
+                                        data-toggle="tooltip" data-placement="top" th:title="${mark.type.name()}"></button>
+                                <button th:if="${mark.value == 5}" th:text="${mark.value}" class="btn btn-info"
+                                        data-toggle="tooltip" data-placement="top" th:title="${mark.type.name()}"></button>
+                                <button th:if="${mark.value == 4}" th:text="${mark.value}" class="btn btn-warning"
+                                        data-toggle="tooltip" data-placement="top" th:title="${mark.type.name()}"></button>
+                                <button th:if="${mark.value == 3}" th:text="${mark.value}" class="btn btn-secondary"
+                                        data-toggle="tooltip" data-placement="top" th:title="${mark.type.name()}"></button>
+                                <button th:if="${mark.value == 2}" th:text="${mark.value}" class="btn btn-danger"
+                                        data-toggle="tooltip" data-placement="top" th:title="${mark.type.name()}"></button>
                             </th:block>
                             <button th:if="${#strings.equals(subject.name, currentTeacher.subject.name)}"
                                     class="btn btn-primary"
@@ -78,3 +87,9 @@
 <th:block th:include="common/footer"></th:block>
 </body>
 </html>
+
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    })
+</script>

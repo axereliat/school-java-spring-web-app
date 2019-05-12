@@ -45,9 +45,9 @@
                 <i class="fas fa-user-alt-slash"></i>
                 <span>Disabled accounts (3)</span></a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="tables.html">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Tables</span></a>
+        <li class="nav-item" th:if="${currentUser.isStudent()}">
+            <a class="nav-link" href="/student/my-marks">
+                <i class="fas fa-book"></i>
+                <span>Marks</span></a>
         </li>
     </ul>

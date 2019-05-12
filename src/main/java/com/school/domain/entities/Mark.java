@@ -3,6 +3,7 @@ package com.school.domain.entities;
 import com.school.common.enumerations.MarkType;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "marks")
@@ -15,6 +16,8 @@ public class Mark {
     private MarkType type;
 
     private Subject subject;
+
+    private LocalDateTime writtenOn;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,5 +54,14 @@ public class Mark {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    @Column(name = "written_on")
+    public LocalDateTime getWrittenOn() {
+        return writtenOn;
+    }
+
+    public void setWrittenOn(LocalDateTime writtenOn) {
+        this.writtenOn = writtenOn;
     }
 }

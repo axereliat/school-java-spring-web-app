@@ -89,6 +89,8 @@ public class TeacherController {
             redirectAttributes.addFlashAttribute("error", "An error occurred.");
         }
 
+        redirectAttributes.addFlashAttribute("success", "Mark successfully added.");
+
         return "redirect:/teacher/students/" + studentId;
     }
 }
