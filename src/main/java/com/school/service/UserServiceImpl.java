@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
 
     private final ModelMapper modelMapper;
 
-
     @Autowired
     public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, SubjectRepository subjectRepository, BCryptPasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.userRepository = userRepository;
@@ -64,7 +63,6 @@ public class UserServiceImpl implements UserService {
             user.setUsername("mario");
             user.setPassword(this.passwordEncoder.encode("123"));
             user.getAuthorities().add(this.roleRepository.findByAuthority(RoleConstants.ADMIN_ROLE));
-            user.getAuthorities().add(this.roleRepository.findByAuthority(RoleConstants.TEACHER_ROLE));
             user.setPhoneNumber("0898452104");
             this.userRepository.saveAndFlush(user);
         }
@@ -167,6 +165,23 @@ public class UserServiceImpl implements UserService {
         this.userRepository.saveAndFlush(student);
 
         return true;
+    }
+
+
+    @Override
+    public List<Teacher> findAllTeachers() {
+        return this.userRepository.findAll().stream()
+                .filter(User::isTeacher)
+                .map(user -> (Teacher) user)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Student> findAllStudents() {
+        return this.userRepository.findAll().stream()
+                .filter(User::isStudent)
+                .map(user -> (Student) user)
+                .collect(Collectors.toList());
     }
 
     @Override

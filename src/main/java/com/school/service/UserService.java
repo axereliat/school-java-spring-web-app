@@ -1,5 +1,7 @@
 package com.school.service;
 
+import com.school.domain.entities.Student;
+import com.school.domain.entities.Teacher;
 import com.school.domain.entities.User;
 import com.school.domain.models.binding.MarkWriteBindingModel;
 import com.school.domain.models.binding.UserRegisterBindingModel;
@@ -29,4 +31,8 @@ public interface UserService extends UserDetailsService {
     boolean writeMark(Integer studentId, MarkWriteBindingModel bindingModel, Principal principal);
 
     User findById(Integer studentId);
+
+    List<Teacher> findAllTeachers();
+
+    List<Student> findAllStudents();
 }

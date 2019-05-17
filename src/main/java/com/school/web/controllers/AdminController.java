@@ -32,6 +32,14 @@ public class AdminController {
         this.subjectService = subjectService;
     }
 
+    @GetMapping("/users")
+    public String usersList(Model model) {
+        model.addAttribute("students", this.userService.findAllStudents());
+        model.addAttribute("teachers", this.userService.findAllTeachers());
+
+        return "admin/users-list";
+    }
+
     @GetMapping("/disabled-accounts")
     public String disabledAccounts(Model model) {
         model.addAttribute("users", this.userService.findAllDisabledAccounts());

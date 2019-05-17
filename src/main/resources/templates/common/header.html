@@ -45,6 +45,11 @@
                 <i class="fas fa-user-alt-slash"></i>
                 <span>Disabled accounts (3)</span></a>
         </li>
+        <li class="nav-item" th:if="${currentUser.isAdmin()}">
+            <a class="nav-link" href="/admin/users">
+                <i class="fas fa-users"></i>
+                <span>All users</span></a>
+        </li>
         <li class="nav-item" th:if="${currentUser.isStudent()}">
             <a class="nav-link" href="/student/my-marks">
                 <i class="fas fa-book"></i>
