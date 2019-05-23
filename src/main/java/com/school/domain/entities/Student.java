@@ -9,14 +9,11 @@ public class Student extends User {
 
     private Set<Mark> marks;
 
-    private Set<Absence> absences;
-
     private int grade;
 
     private char classLetter;
 
     public Student() {
-        this.absences = new HashSet<>();
         this.marks = new HashSet<>();
     }
 
@@ -30,18 +27,6 @@ public class Student extends User {
 
     public void setMarks(Set<Mark> marks) {
         this.marks = marks;
-    }
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "students_absences",
-            joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "absence_id", referencedColumnName = "id"))
-    public Set<Absence> getAbsences() {
-        return absences;
-    }
-
-    public void setAbsences(Set<Absence> absences) {
-        this.absences = absences;
     }
 
     public int getGrade() {
